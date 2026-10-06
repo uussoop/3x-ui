@@ -31,6 +31,7 @@ Built as an enhanced fork of the original X-UI project, 3X-UI adds broader proto
 - **AmneziaWG built in** — DPI-resistant WireGuard runs inside the panel on a userspace network stack, with no kernel module, DKMS, or extra packages to install.
 - **Native TUIC v5 server** — In-process Go QUIC server with Xray routing and per-client traffic accounting; BBR and New Reno are available server-side. CUBIC is preserved in the client profile but currently falls back to New Reno on the server.
 - **MTProto proxies** — per-client FakeTLS secrets, ad-tags, and quotas, applied live without dropping existing connections.
+- **OpenVPN & IKEv2 (IPsec)** — both directions: inbounds (server) and outbounds (exit) with per-client accounts, live status, session listing/disconnect, and traffic accounting.
 - **Fallbacks** — serve multiple protocols on a single port (e.g. VLESS and Trojan on 443) using Xray's fallback support.
 - **Per-client management** — traffic quotas, expiry dates, IP limits with trusted-address exemptions, HWID device limits, scheduled renewal cycles, live online status, and one-click share links, QR codes, and subscriptions.
 - **Traffic statistics** — per inbound, per client, and per outbound, with reset controls.
