@@ -206,9 +206,8 @@ jobs:
           PKG_DIR=$(mktemp -d)
           mkdir -p "$PKG_DIR/usr/local/x-ui" "$PKG_DIR/lib/systemd/system"
           cp -r x-ui/* "$PKG_DIR/usr/local/x-ui/"
-          cp x-ui.service.debian "$PKG_DIR/lib/systemd/system/x-ui.service"
           chmod +x "$PKG_DIR/usr/local/x-ui/x-ui"
-          fpm -s dir -t deb -n 3x-ui -v "$VERSION"             --architecture "$DEB_ARCH"             --description "3X-UI - Advanced web panel for Xray-core"             --maintainer "3X-UI"             --url "https://github.com/MHSanaei/3x-ui"             --license "AGPL-3.0"             --deb-systemd "$PKG_DIR/lib/systemd/system/x-ui.service"             --after-install /dev/null             -C "$PKG_DIR"             usr/local/x-ui lib/systemd/system
+          fpm -s dir -t deb -n 3x-ui -v "$VERSION"             --architecture "$DEB_ARCH"             --description "3X-UI - Advanced web panel for Xray-core"             --maintainer "3X-UI"             --url "https://github.com/MHSanaei/3x-ui"             --license "AGPL-3.0"             --deb-systemd ./x-ui.service.debian             --after-install /dev/null             -C "$PKG_DIR"             usr/local/x-ui
           DEB_FILE="3x-ui_${VERSION}_${DEB_ARCH}.deb"
           mv *.deb "$DEB_FILE"
           sha256sum "$DEB_FILE" > "$DEB_FILE.sha256"
