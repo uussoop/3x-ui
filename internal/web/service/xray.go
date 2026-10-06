@@ -189,6 +189,11 @@ func (s *XrayService) GetXrayConfig() (*xray.Config, error) {
 	if err := transformAmneziaWGOutbounds(xrayConfig); err != nil {
 		return nil, err
 	}
+	// Same for the openvpn/ikev2 exits: the core has no such proxy, and the
+	// replacement is what pins an exit's traffic to its tunnel device.
+	if err := transformVPNExitOutbounds(xrayConfig); err != nil {
+		return nil, err
+	}
 
 	_, _, _ = s.inboundService.AddTraffic(nil, nil)
 
@@ -203,7 +208,7 @@ func (s *XrayService) GetXrayConfig() (*xray.Config, error) {
 		if inbound.NodeID != nil {
 			continue
 		}
-		if inbound.Protocol == model.MTProto || inbound.Protocol == model.AmneziaWG || inbound.Protocol == model.TUIC {
+		if inbound.Protocol == model.MTProto || inbound.Protocol == model.AmneziaWG || inbound.Protocol == model.TUIC || inbound.Protocol == model.OpenVPN || inbound.Protocol == model.IKEv2 {
 			continue
 		}
 		settings := map[string]any{}

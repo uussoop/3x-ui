@@ -2363,7 +2363,39 @@
         "poolSize": "Pool Size"
       },
       "defaultOutbound": "Default Outbound",
-      "defaultOutboundDesc": "Traffic that does not match any routing rule uses this outbound (Xray uses the first outbound in the list)."
+      "defaultOutboundDesc": "Traffic that does not match any routing rule uses this outbound (Xray uses the first outbound in the list).",
+      "openvpn": {
+        "mode": "Mode",
+        "modeServer": "Server (inbound)",
+        "modeClient": "Client (exit)",
+        "proto": "Transport protocol",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "TUN device",
+        "ca": "CA certificate",
+        "cert": "Certificate",
+        "key": "Private key",
+        "remote": "Remote server",
+        "authUserPass": "Username / password",
+        "profile": "Profile (.ovpn)",
+        "probeTarget": "Health probe target",
+        "probeDevice": "Probe interface"
+      },
+      "ikev2": {
+        "mode": "Mode",
+        "modeServer": "Server (inbound)",
+        "modeClient": "Client (exit)",
+        "caCert": "CA certificate",
+        "cert": "Certificate",
+        "key": "Private key",
+        "authMethod": "Authentication method",
+        "authEap": "EAP-MSCHAPv2 (username/password)",
+        "authCert": "Certificate",
+        "authPsk": "Pre-shared key",
+        "psk": "Pre-shared key",
+        "probeTarget": "Health probe target",
+        "probeDevice": "Probe interface"
+      }
     },
     "sponsors": {
       "title": "Sponsors",

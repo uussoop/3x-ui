@@ -12,6 +12,8 @@ import type {
 } from '@/schemas/protocols/inbound/shadowsocks';
 import type { TrojanClient, TrojanInboundSettings } from '@/schemas/protocols/inbound/trojan';
 import type { TuicClient, TuicInboundSettings } from '@/schemas/protocols/inbound/tuic';
+import type { OpenVPNInboundSettings } from '@/schemas/protocols/inbound/openvpn';
+import type { IKEv2InboundSettings } from '@/schemas/protocols/inbound/ikev2';
 import type { TunInboundSettings } from '@/schemas/protocols/inbound/tun';
 import type { TunnelInboundSettings } from '@/schemas/protocols/inbound/tunnel';
 import type { VlessClient, VlessInboundSettings } from '@/schemas/protocols/inbound/vless';
@@ -375,7 +377,9 @@ export type AnyInboundSettings =
   | WireguardInboundSettings
   | MtprotoInboundSettings
   | AmneziawgInboundSettings
-  | TuicInboundSettings;
+  | TuicInboundSettings
+  | OpenVPNInboundSettings
+  | IKEv2InboundSettings;
 
 export function createDefaultInboundSettings(protocol: string): AnyInboundSettings | null {
   switch (protocol) {
@@ -405,6 +409,10 @@ export function createDefaultInboundSettings(protocol: string): AnyInboundSettin
       return createDefaultAmneziawgInboundSettings();
     case 'tuic':
       return createDefaultTuicInboundSettings();
+    case 'openvpn':
+      return { mode: 'server', port: 1194, proto: 'udp', clients: [] };
+    case 'ikev2':
+      return { mode: 'server', localPort: 500, clients: [] };
     default:
       return null;
   }

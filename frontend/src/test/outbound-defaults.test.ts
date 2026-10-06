@@ -6,7 +6,9 @@ import {
   createDefaultFreedomOutboundSettings,
   createDefaultHttpOutboundSettings,
   createDefaultHysteriaOutboundSettings,
+  createDefaultIKEv2OutboundSettings,
   createDefaultLoopbackOutboundSettings,
+  createDefaultOpenVPNOutboundSettings,
   createDefaultShadowsocksOutboundSettings,
   createDefaultSocksOutboundSettings,
   createDefaultTrojanOutboundSettings,
@@ -21,7 +23,9 @@ import {
   FreedomOutboundSettingsSchema,
   HttpOutboundSettingsSchema,
   HysteriaOutboundSettingsSchema,
+  IKEv2OutboundSettingsSchema,
   LoopbackOutboundSettingsSchema,
+  OpenVPNOutboundSettingsSchema,
   ShadowsocksOutboundSettingsSchema,
   SocksOutboundSettingsSchema,
   TrojanOutboundSettingsSchema,
@@ -140,6 +144,49 @@ describe('outbound default factories: shape snapshots', () => {
       version: 2,
     });
   });
+
+  it('openvpn exits with an unconfigured tunnel and no probe target', () => {
+    expect(createDefaultOpenVPNOutboundSettings()).toEqual({
+      mode: 'client',
+      config: '',
+      authUserPass: '',
+      dev: 'tun',
+      proto: 'udp',
+      remote: '',
+      port: 1194,
+      cipher: 'AES-256-CBC',
+      auth: 'SHA512',
+      compLzo: 'adaptive',
+      verb: 3,
+      ca: '',
+      cert: '',
+      key: '',
+      tlsAuth: '',
+      probeTarget: '',
+      probeDevice: '',
+    });
+  });
+
+  it('ikev2 exits with EAP auth and no probe target', () => {
+    expect(createDefaultIKEv2OutboundSettings()).toEqual({
+      mode: 'client',
+      remote: '',
+      port: 500,
+      localAddr: '0.0.0.0',
+      natTraversal: true,
+      ikeVersion: 2,
+      encryption: 'aes256-sha256-modp2048',
+      authMethod: 'eap-mschapv2',
+      username: '',
+      password: '',
+      psk: '',
+      caCert: '',
+      clientCert: '',
+      clientKey: '',
+      probeTarget: '',
+      probeDevice: '',
+    });
+  });
 });
 
 describe('outbound default factories: schema acceptance after stub fill-in', () => {
@@ -221,6 +268,42 @@ describe('outbound default factories: schema acceptance after stub fill-in', () 
     def.address = SAMPLE_ADDRESS;
     expect(HysteriaOutboundSettingsSchema.safeParse(def).success).toBe(true);
   });
+
+  it('openvpn parses with its factory defaults', () => {
+    expect(
+      OpenVPNOutboundSettingsSchema.safeParse(createDefaultOpenVPNOutboundSettings()).success,
+    ).toBe(true);
+  });
+
+  it('ikev2 parses with its factory defaults', () => {
+    expect(
+      IKEv2OutboundSettingsSchema.safeParse(createDefaultIKEv2OutboundSettings()).success,
+    ).toBe(true);
+  });
+
+  it('rejects a probe target that is not host:port', () => {
+    // The panel validates again before the value ever reaches a dial, but a
+    // malformed target should not survive the form either: "https://x/y" would
+    // otherwise be a confusing failure later instead of a rejected one here.
+    const def = createDefaultOpenVPNOutboundSettings();
+    def.probeTarget = 'not a target';
+    expect(OpenVPNOutboundSettingsSchema.safeParse(def).success).toBe(false);
+
+    def.probeTarget = 'example.com:80:90';
+    expect(OpenVPNOutboundSettingsSchema.safeParse(def).success).toBe(false);
+
+    def.probeTarget = 'example.com:70000';
+    expect(OpenVPNOutboundSettingsSchema.safeParse(def).success).toBe(false);
+  });
+
+  it('accepts an empty probe target: not measuring beats inventing a destination', () => {
+    expect(
+      OpenVPNOutboundSettingsSchema.safeParse(createDefaultOpenVPNOutboundSettings()).success,
+    ).toBe(true);
+    expect(
+      IKEv2OutboundSettingsSchema.safeParse(createDefaultIKEv2OutboundSettings()).success,
+    ).toBe(true);
+  });
 });
 
 describe('createDefaultOutboundSettings dispatcher', () => {
@@ -237,6 +320,8 @@ describe('createDefaultOutboundSettings dispatcher', () => {
     'wireguard',
     'hysteria',
     'loopback',
+    'openvpn',
+    'ikev2',
   ];
 
   for (const protocol of PROTOCOLS) {

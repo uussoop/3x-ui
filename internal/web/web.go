@@ -20,8 +20,10 @@ import (
 	"github.com/mhsanaei/3x-ui/v3/internal/amneziawgnet"
 	"github.com/mhsanaei/3x-ui/v3/internal/config"
 	"github.com/mhsanaei/3x-ui/v3/internal/eventbus"
+	"github.com/mhsanaei/3x-ui/v3/internal/ikev2"
 	"github.com/mhsanaei/3x-ui/v3/internal/logger"
 	"github.com/mhsanaei/3x-ui/v3/internal/mtproto"
+	"github.com/mhsanaei/3x-ui/v3/internal/openvpn"
 	"github.com/mhsanaei/3x-ui/v3/internal/tuic"
 	"github.com/mhsanaei/3x-ui/v3/internal/util/common"
 	"github.com/mhsanaei/3x-ui/v3/internal/util/sys"
@@ -300,6 +302,8 @@ const (
 	cadenceMtproto       = "@every 10s"
 	cadenceAmneziaWG     = "@every 10s"
 	cadenceTuic          = "@every 10s"
+	cadenceOpenVPN       = "@every 10s"
+	cadenceIKEv2         = "@every 10s"
 	cadenceClientIPScan  = "@every 10s"
 	cadenceNodeHeartbeat = "@every 5s"
 	cadenceNodeTraffic   = "@every 5s"
@@ -349,6 +353,14 @@ func (s *Server) startTask(restartXray bool, loc *time.Location) {
 	tuicJob := job.NewTuicJob()
 	_, _ = s.cron.AddJob(cadenceTuic, tuicJob)
 	go tuicJob.Run()
+
+	openvpnJob := job.NewOpenVPNJob()
+	_, _ = s.cron.AddJob(cadenceOpenVPN, openvpnJob)
+	go openvpnJob.Run()
+
+	ikev2Job := job.NewIKEv2Job()
+	_, _ = s.cron.AddJob(cadenceIKEv2, ikev2Job)
+	go ikev2Job.Run()
 
 	// check client ips from log file every 10 sec
 	_, _ = s.cron.AddJob(cadenceClientIPScan, job.NewCheckClientIpJob())
@@ -810,6 +822,13 @@ func (s *Server) stop(stopXray bool, stopTgBot bool) error {
 		mtproto.GetManager().StopAll()
 		amneziawgnet.GetManager().StopAll()
 		amneziawgnet.GetOutboundManager().StopAll()
+		// Both are child processes / loaded connections the panel owns, so they
+		// are torn down with it. Leaving an openvpn daemon behind would keep
+		// serving clients the panel no longer knows about, and leaving a
+		// connection loaded in charon would keep the panel's XFRM policies in the
+		// kernel after the operator removed the inbound.
+		openvpn.GetManager().StopAll()
+		ikev2.GetManager().StopAll()
 	}
 	if stopXray {
 		if err := s.xrayService.StopXray(); err != nil {

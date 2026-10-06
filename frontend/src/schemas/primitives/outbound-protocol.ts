@@ -22,6 +22,8 @@ export const OutboundProtocols = Object.freeze({
   Socks: 'socks',
   HTTP: 'http',
   Loopback: 'loopback',
+  OpenVPN: 'openvpn',
+  IKEv2: 'ikev2',
 });
 
 export const OutboundDomainStrategies = Object.freeze([

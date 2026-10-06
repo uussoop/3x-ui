@@ -64,8 +64,10 @@ import {
   AmneziawgFields,
   HttpFields,
   HysteriaFields,
+  IKEv2Fields,
   MixedFields,
   MtprotoFields,
+  OpenVPNFields,
   ShadowsocksFields,
   TuicFields,
   TunFields,
@@ -814,6 +816,10 @@ export default function InboundFormModal({
       )}
 
       {protocol === Protocols.TUIC && <TuicFields />}
+
+      {protocol === Protocols.OPENVPN && <OpenVPNFields />}
+
+      {protocol === Protocols.IKEV2 && <IKEv2Fields />}
 
       {protocol === Protocols.TUN && <TunFields />}
 

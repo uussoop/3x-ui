@@ -2245,7 +2245,39 @@
         "poolSize": "Tamanho do Pool"
       },
       "defaultOutbound": "Saída padrão",
-      "defaultOutboundDesc": "Tráfego sem regra de roteamento usa esta saída (a primeira da lista)."
+      "defaultOutboundDesc": "Tráfego sem regra de roteamento usa esta saída (a primeira da lista).",
+      "openvpn": {
+        "mode": "Modo",
+        "modeServer": "Servidor (entrada)",
+        "modeClient": "Cliente (saída)",
+        "proto": "Protocolo de transporte",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "Dispositivo TUN",
+        "ca": "Certificado CA",
+        "cert": "Certificado",
+        "key": "Chave privada",
+        "remote": "Servidor remoto",
+        "authUserPass": "Usuário / senha",
+        "profile": "Perfil (.ovpn)",
+        "probeTarget": "Destino da sonda de saúde",
+        "probeDevice": "Interface da sonda"
+      },
+      "ikev2": {
+        "mode": "Modo",
+        "modeServer": "Servidor (entrada)",
+        "modeClient": "Cliente (saída)",
+        "caCert": "Certificado CA",
+        "cert": "Certificado",
+        "key": "Chave privada",
+        "authMethod": "Método de autenticação",
+        "authEap": "EAP-MSCHAPv2 (usuário / senha)",
+        "authCert": "Certificado",
+        "authPsk": "Chave pré-compartilhada",
+        "psk": "Chave pré-compartilhada",
+        "probeTarget": "Destino da sonda de saúde",
+        "probeDevice": "Interface da sonda"
+      }
     },
     "hosts": {
       "addHost": "Adicionar Host",

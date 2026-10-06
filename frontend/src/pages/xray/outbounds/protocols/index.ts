@@ -7,6 +7,8 @@ export { default as HttpFields } from './http';
 export { default as SocksFields } from './socks';
 export { default as WireguardFields } from './wireguard';
 export { default as AmneziawgFields } from './amneziawg';
+export { default as OpenVPNFields } from './openvpn';
+export { default as IKEv2Fields } from './ikev2';
 export { default as FreedomFields } from './freedom';
 export { default as LoopbackFields } from './loopback';
 export { default as BlackholeFields } from './blackhole';

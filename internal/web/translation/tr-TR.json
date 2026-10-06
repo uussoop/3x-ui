@@ -2245,7 +2245,39 @@
         "poolSize": "Havuz Boyutu"
       },
       "defaultOutbound": "Varsayılan giden",
-      "defaultOutboundDesc": "Yönlendirme kuralıyla eşleşmeyen trafik bu gideni kullanır (listedeki ilk giden)."
+      "defaultOutboundDesc": "Yönlendirme kuralıyla eşleşmeyen trafik bu gideni kullanır (listedeki ilk giden).",
+      "openvpn": {
+        "mode": "Mod",
+        "modeServer": "Sunucu (gelen)",
+        "modeClient": "İstemci (çıkış)",
+        "proto": "Taşıma protokolü",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "TUN cihazı",
+        "ca": "CA sertifikası",
+        "cert": "Sertifika",
+        "key": "Özel anahtar",
+        "remote": "Uzak sunucu",
+        "authUserPass": "Kullanıcı adı / parola",
+        "profile": "Profil (.ovpn)",
+        "probeTarget": "Sağlık sondası hedefi",
+        "probeDevice": "Sondaj arayüzü"
+      },
+      "ikev2": {
+        "mode": "Mod",
+        "modeServer": "Sunucu (gelen)",
+        "modeClient": "İstemci (çıkış)",
+        "caCert": "CA sertifikası",
+        "cert": "Sertifika",
+        "key": "Özel anahtar",
+        "authMethod": "Kimlik doğrulama yöntemi",
+        "authEap": "EAP-MSCHAPv2 (kullanıcı adı / parola)",
+        "authCert": "Sertifika",
+        "authPsk": "Önceden paylaşılan anahtar",
+        "psk": "Önceden paylaşılan anahtar",
+        "probeTarget": "Sağlık sondası hedefi",
+        "probeDevice": "Sondaj arayüzü"
+      }
     },
     "hosts": {
       "addHost": "Host Ekle",

@@ -2245,7 +2245,39 @@
         "poolSize": "Tamaño del grupo"
       },
       "defaultOutbound": "Salida predeterminada",
-      "defaultOutboundDesc": "El tráfico que no coincide con ninguna regla de enrutamiento usa esta salida (la primera de la lista)."
+      "defaultOutboundDesc": "El tráfico que no coincide con ninguna regla de enrutamiento usa esta salida (la primera de la lista).",
+      "openvpn": {
+        "mode": "Modo",
+        "modeServer": "Servidor (entrante)",
+        "modeClient": "Cliente (salida)",
+        "proto": "Protocolo de transporte",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "Dispositivo TUN",
+        "ca": "Certificado CA",
+        "cert": "Certificado",
+        "key": "Clave privada",
+        "remote": "Servidor remoto",
+        "authUserPass": "Usuario / contraseña",
+        "profile": "Perfil (.ovpn)",
+        "probeTarget": "Destino de la sonda de salud",
+        "probeDevice": "Interfaz de la sonda"
+      },
+      "ikev2": {
+        "mode": "Modo",
+        "modeServer": "Servidor (entrante)",
+        "modeClient": "Cliente (salida)",
+        "caCert": "Certificado CA",
+        "cert": "Certificado",
+        "key": "Clave privada",
+        "authMethod": "Método de autenticación",
+        "authEap": "EAP-MSCHAPv2 (usuario / contraseña)",
+        "authCert": "Certificado",
+        "authPsk": "Clave precompartida",
+        "psk": "Clave precompartida",
+        "probeTarget": "Destino de la sonda de salud",
+        "probeDevice": "Interfaz de la sonda"
+      }
     },
     "hosts": {
       "addHost": "Agregar host",

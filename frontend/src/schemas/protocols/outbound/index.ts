@@ -13,6 +13,8 @@ import { TrojanOutboundSettingsSchema } from './trojan';
 import { VlessOutboundSettingsSchema } from './vless';
 import { VmessOutboundSettingsSchema } from './vmess';
 import { WireguardOutboundSettingsSchema } from './wireguard';
+import { OpenVPNOutboundSettingsSchema } from './openvpn';
+import { IKEv2OutboundSettingsSchema } from './ikev2';
 
 export * from './blackhole';
 export * from './amneziawg';
@@ -27,6 +29,8 @@ export * from './trojan';
 export * from './vless';
 export * from './vmess';
 export * from './wireguard';
+export * from './openvpn';
+export * from './ikev2';
 
 export const OutboundSettingsSchema = z.discriminatedUnion('protocol', [
   z.object({ protocol: z.literal('vmess'), settings: VmessOutboundSettingsSchema }),
@@ -42,5 +46,7 @@ export const OutboundSettingsSchema = z.discriminatedUnion('protocol', [
   z.object({ protocol: z.literal('blackhole'), settings: BlackholeOutboundSettingsSchema }),
   z.object({ protocol: z.literal('dns'), settings: DNSOutboundSettingsSchema }),
   z.object({ protocol: z.literal('loopback'), settings: LoopbackOutboundSettingsSchema }),
+  z.object({ protocol: z.literal('openvpn'), settings: OpenVPNOutboundSettingsSchema }),
+  z.object({ protocol: z.literal('ikev2'), settings: IKEv2OutboundSettingsSchema }),
 ]);
 export type OutboundSettings = z.infer<typeof OutboundSettingsSchema>;

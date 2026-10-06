@@ -2245,7 +2245,39 @@
         "poolSize": "حجم المجموعة"
       },
       "defaultOutbound": "الصادر الافتراضي",
-      "defaultOutboundDesc": "الحركة التي لا تطابق أي قاعدة توجيه تستخدم هذا الصادر (الأول في القائمة)."
+      "defaultOutboundDesc": "الحركة التي لا تطابق أي قاعدة توجيه تستخدم هذا الصادر (الأول في القائمة).",
+      "openvpn": {
+        "mode": "الوضع",
+        "modeServer": "خادم (وارد)",
+        "modeClient": "عميل (خروج)",
+        "proto": "بروتوكول النقل",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "جهاز TUN",
+        "ca": "شهادة CA",
+        "cert": "الشهادة",
+        "key": "المفتاح الخاص",
+        "remote": "الخادم البعيد",
+        "authUserPass": "اسم المستخدم / كلمة المرور",
+        "profile": "الملف الشخصي (.ovpn)",
+        "probeTarget": "هدف فحص الصحة",
+        "probeDevice": "واجهة الفحص"
+      },
+      "ikev2": {
+        "mode": "الوضع",
+        "modeServer": "خادم (وارد)",
+        "modeClient": "عميل (خروج)",
+        "caCert": "شهادة CA",
+        "cert": "الشهادة",
+        "key": "المفتاح الخاص",
+        "authMethod": "طريقة المصادقة",
+        "authEap": "EAP-MSCHAPv2 (اسم مستخدم / كلمة مرور)",
+        "authCert": "الشهادة",
+        "authPsk": "مفتاح مشترك مسبقًا",
+        "psk": "مفتاح مشترك مسبقًا",
+        "probeTarget": "هدف فحص الصحة",
+        "probeDevice": "واجهة الفحص"
+      }
     },
     "hosts": {
       "addHost": "إضافة مضيف",

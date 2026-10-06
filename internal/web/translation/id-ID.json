@@ -2245,7 +2245,39 @@
         "poolSize": "Ukuran Kolam"
       },
       "defaultOutbound": "Outbound default",
-      "defaultOutboundDesc": "Lalu lintas tanpa aturan routing memakai outbound ini (yang pertama dalam daftar)."
+      "defaultOutboundDesc": "Lalu lintas tanpa aturan routing memakai outbound ini (yang pertama dalam daftar).",
+      "openvpn": {
+        "mode": "Mode",
+        "modeServer": "Server (masukan)",
+        "modeClient": "Klien (keluar)",
+        "proto": "Protokol transpor",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "Perangkat TUN",
+        "ca": "Sertifikat CA",
+        "cert": "Sertifikat",
+        "key": "Kunci privat",
+        "remote": "Server jarak jauh",
+        "authUserPass": "Nama pengguna / kata sandi",
+        "profile": "Profil (.ovpn)",
+        "probeTarget": "Target pemeriksaan kesehatan",
+        "probeDevice": "Antarmuka pemeriksaan"
+      },
+      "ikev2": {
+        "mode": "Mode",
+        "modeServer": "Server (masukan)",
+        "modeClient": "Klien (keluar)",
+        "caCert": "Sertifikat CA",
+        "cert": "Sertifikat",
+        "key": "Kunci privat",
+        "authMethod": "Metode autentikasi",
+        "authEap": "EAP-MSCHAPv2 (nama pengguna / kata sandi)",
+        "authCert": "Sertifikat",
+        "authPsk": "Kunci bersama pra",
+        "psk": "Kunci bersama pra",
+        "probeTarget": "Target pemeriksaan kesehatan",
+        "probeDevice": "Antarmuka pemeriksaan"
+      }
     },
     "hosts": {
       "addHost": "Tambah Host",

@@ -2245,7 +2245,39 @@
         "poolSize": "اندازه استخر"
       },
       "defaultOutbound": "خروجی پیش‌فرض",
-      "defaultOutboundDesc": "ترافیکی که با هیچ قانون مسیریابی جور نشود از این خروجی استفاده می‌کند (اولین خروجی در فهرست)."
+      "defaultOutboundDesc": "ترافیکی که با هیچ قانون مسیریابی جور نشود از این خروجی استفاده می‌کند (اولین خروجی در فهرست).",
+      "openvpn": {
+        "mode": "حالت",
+        "modeServer": "سرور (ورودی)",
+        "modeClient": "کلاینت (خروجی)",
+        "proto": "پروتکل انتقال",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "دستگاه TUN",
+        "ca": "گواهی CA",
+        "cert": "گواهی",
+        "key": "کلید خصوصی",
+        "remote": "سرور راه دور",
+        "authUserPass": "نام کاربری / رمز عبور",
+        "profile": "پروفایل (.ovpn)",
+        "probeTarget": "هدف کاوش سلامت",
+        "probeDevice": "رابط کاوش"
+      },
+      "ikev2": {
+        "mode": "حالت",
+        "modeServer": "سرور (ورودی)",
+        "modeClient": "کلاینت (خروجی)",
+        "caCert": "گواهی CA",
+        "cert": "گواهی",
+        "key": "کلید خصوصی",
+        "authMethod": "روش احراز هویت",
+        "authEap": "EAP-MSCHAPv2 (نام کاربری / رمز عبور)",
+        "authCert": "گواهی",
+        "authPsk": "کلید از پیش مشترک",
+        "psk": "کلید از پیش مشترک",
+        "probeTarget": "هدف کاوش سلامت",
+        "probeDevice": "رابط کاوش"
+      }
     },
     "hosts": {
       "addHost": "افزودن میزبان",

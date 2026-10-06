@@ -8,6 +8,8 @@ import { MtprotoInboundSettingsSchema } from './mtproto';
 import { ShadowsocksInboundSettingsSchema } from './shadowsocks';
 import { TrojanInboundSettingsSchema } from './trojan';
 import { TuicInboundSettingsSchema } from './tuic';
+import { OpenVPNInboundSettingsSchema } from './openvpn';
+import { IKEv2InboundSettingsSchema } from './ikev2';
 import { TunInboundSettingsSchema } from './tun';
 import { TunnelInboundSettingsSchema } from './tunnel';
 import { VlessInboundSettingsSchema } from './vless';
@@ -22,6 +24,8 @@ export * from './mtproto';
 export * from './shadowsocks';
 export * from './trojan';
 export * from './tuic';
+export * from './openvpn';
+export * from './ikev2';
 export * from './tun';
 export * from './tunnel';
 export * from './vless';
@@ -47,5 +51,7 @@ export const InboundSettingsSchema = z.discriminatedUnion('protocol', [
   z.object({ protocol: z.literal('mtproto'), settings: MtprotoInboundSettingsSchema }),
   z.object({ protocol: z.literal('amneziawg'), settings: AmneziawgInboundSettingsSchema }),
   z.object({ protocol: z.literal('tuic'), settings: TuicInboundSettingsSchema }),
+  z.object({ protocol: z.literal('openvpn'), settings: OpenVPNInboundSettingsSchema }),
+  z.object({ protocol: z.literal('ikev2'), settings: IKEv2InboundSettingsSchema }),
 ]);
 export type InboundSettings = z.infer<typeof InboundSettingsSchema>;

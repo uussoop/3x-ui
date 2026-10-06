@@ -254,6 +254,15 @@ func (s *ClientService) delInboundClients(inboundSvc *InboundService, inboundId 
 		advancePushedInbound(nodeRt, prevSettings, string(newSettings), oldInbound)
 	}
 
+	// VPN protocols: a deleted account is gone from the panel but may still have
+	// an active session on a local tunnel until killed.
+	if oldInbound.Protocol == model.OpenVPN {
+		inboundSvc.applyLocalOpenVPN(oldInbound.Id)
+	}
+	if oldInbound.Protocol == model.IKEv2 {
+		inboundSvc.applyLocalIKEv2(oldInbound.Id)
+	}
+
 	return needRestart, nil
 }
 
@@ -590,6 +599,10 @@ func (s *ClientService) AddInboundClient(inboundSvc *InboundService, data *model
 			inboundSvc.applyLocalAmneziaWG(oldInbound.Id)
 		} else if oldInbound.Protocol == model.TUIC {
 			inboundSvc.applyLocalTuic(oldInbound.Id)
+		} else if oldInbound.Protocol == model.OpenVPN {
+			inboundSvc.applyLocalOpenVPN(oldInbound.Id)
+		} else if oldInbound.Protocol == model.IKEv2 {
+			inboundSvc.applyLocalIKEv2(oldInbound.Id)
 		} else {
 			for _, client := range clients {
 				if len(client.Email) == 0 {
@@ -1025,6 +1038,20 @@ func (s *ClientService) UpdateInboundClient(inboundSvc *InboundService, data *mo
 				inboundSvc.applyLocalAmneziaWG(oldInbound.Id)
 			} else if oldInbound.Protocol == model.TUIC {
 				inboundSvc.applyLocalTuic(oldInbound.Id)
+			} else if oldInbound.Protocol == model.OpenVPN {
+				// Re-applying the account list is what revokes the old account: a
+				// tunnel whose config no longer knows it will not authenticate it,
+				// and the live session has to be evicted separately — a running
+				// session is not affected by a config change alone.
+				inboundSvc.applyLocalOpenVPN(oldInbound.Id)
+				if oldClients[clientIndex].Enable {
+					inboundSvc.disconnectOpenVPNClient(oldEmail)
+				}
+			} else if oldInbound.Protocol == model.IKEv2 {
+				inboundSvc.applyLocalIKEv2(oldInbound.Id)
+				if oldClients[clientIndex].Enable {
+					inboundSvc.disconnectIKEv2Client(oldEmail)
+				}
 			} else {
 				if oldClients[clientIndex].Enable {
 					err1 := rt.RemoveUser(context.Background(), oldInbound, oldEmail)
@@ -1217,6 +1244,16 @@ func (s *ClientService) DelInboundClientByEmail(inboundSvc *InboundService, inbo
 				inboundSvc.applyLocalAmneziaWG(oldInbound.Id)
 			} else if oldInbound.Protocol == model.TUIC {
 				inboundSvc.applyLocalTuic(oldInbound.Id)
+			} else if oldInbound.Protocol == model.OpenVPN {
+				// Same reasoning as the other VPN protocols: the whole account list
+				// is re-derived, so any delete re-applies it. A live session is
+				// additionally evicted, since a config change alone leaves an
+				// already-authenticated client connected.
+				inboundSvc.applyLocalOpenVPN(oldInbound.Id)
+				inboundSvc.disconnectOpenVPNClient(email)
+			} else if oldInbound.Protocol == model.IKEv2 {
+				inboundSvc.applyLocalIKEv2(oldInbound.Id)
+				inboundSvc.disconnectIKEv2Client(email)
 			} else if needApiDel {
 				// Local inbound: a disabled client isn't in the running Xray, so only
 				// a live one (needApiDel) needs an API removal.

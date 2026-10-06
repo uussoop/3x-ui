@@ -2245,7 +2245,39 @@
         "poolSize": "プールサイズ"
       },
       "defaultOutbound": "デフォルトアウトバウンド",
-      "defaultOutboundDesc": "ルーティング規則に一致しないトラフィックはこのアウトバウンドを使います（一覧の先頭）。"
+      "defaultOutboundDesc": "ルーティング規則に一致しないトラフィックはこのアウトバウンドを使います（一覧の先頭）。",
+      "openvpn": {
+        "mode": "モード",
+        "modeServer": "サーバー（インバウンド）",
+        "modeClient": "クライアント（アウトバウンド）",
+        "proto": "転送プロトコル",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "TUN デバイス",
+        "ca": "CA 証明書",
+        "cert": "証明書",
+        "key": "秘密鍵",
+        "remote": "リモートサーバー",
+        "authUserPass": "ユーザー名 / パスワード",
+        "profile": "プロファイル (.ovpn)",
+        "probeTarget": "ヘルスプローブの送信先",
+        "probeDevice": "プローブ用インターフェース"
+      },
+      "ikev2": {
+        "mode": "モード",
+        "modeServer": "サーバー（インバウンド）",
+        "modeClient": "クライアント（アウトバウンド）",
+        "caCert": "CA 証明書",
+        "cert": "証明書",
+        "key": "秘密鍵",
+        "authMethod": "認証方式",
+        "authEap": "EAP-MSCHAPv2（ユーザー名 / パスワード）",
+        "authCert": "証明書",
+        "authPsk": "事前共有鍵",
+        "psk": "事前共有鍵",
+        "probeTarget": "ヘルスプローブの送信先",
+        "probeDevice": "プローブ用インターフェース"
+      }
     },
     "hosts": {
       "addHost": "ホストを追加",

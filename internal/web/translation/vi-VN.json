@@ -2245,7 +2245,39 @@
         "poolSize": "Kích thước bể bơi"
       },
       "defaultOutbound": "Outbound mặc định",
-      "defaultOutboundDesc": "Lưu lượng không khớp quy tắc định tuyến dùng outbound này (mục đầu danh sách)."
+      "defaultOutboundDesc": "Lưu lượng không khớp quy tắc định tuyến dùng outbound này (mục đầu danh sách).",
+      "openvpn": {
+        "mode": "Chế độ",
+        "modeServer": "Máy chủ (đầu vào)",
+        "modeClient": "Máy khách (đầu ra)",
+        "proto": "Giao thức truyền tải",
+        "protoUdp": "UDP",
+        "protoTcp": "TCP",
+        "dev": "Thiết bị TUN",
+        "ca": "Chứng chỉ CA",
+        "cert": "Chứng chỉ",
+        "key": "Khóa riêng tư",
+        "remote": "Máy chủ từ xa",
+        "authUserPass": "Tên người dùng / mật khẩu",
+        "profile": "Hồ sơ (.ovpn)",
+        "probeTarget": "Đích kiểm tra sức khỏe",
+        "probeDevice": "Giao diện kiểm tra"
+      },
+      "ikev2": {
+        "mode": "Chế độ",
+        "modeServer": "Máy chủ (đầu vào)",
+        "modeClient": "Máy khách (đầu ra)",
+        "caCert": "Chứng chỉ CA",
+        "cert": "Chứng chỉ",
+        "key": "Khóa riêng tư",
+        "authMethod": "Phương thức xác thực",
+        "authEap": "EAP-MSCHAPv2 (tên người dùng / mật khẩu)",
+        "authCert": "Chứng chỉ",
+        "authPsk": "Khóa dùng chung trước",
+        "psk": "Khóa dùng chung trước",
+        "probeTarget": "Đích kiểm tra sức khỏe",
+        "probeDevice": "Giao diện kiểm tra"
+      }
     },
     "hosts": {
       "addHost": "Thêm Host",

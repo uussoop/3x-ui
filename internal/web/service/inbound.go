@@ -1394,7 +1394,7 @@ func (s *InboundService) AddInbound(inbound *model.Inbound) (*model.Inbound, boo
 				if push {
 					payload := inbound
 					pushable := true
-					if inbound.Protocol == model.MTProto || inbound.Protocol == model.TUIC {
+					if inbound.Protocol == model.MTProto || inbound.Protocol == model.TUIC || inbound.Protocol == model.OpenVPN || inbound.Protocol == model.IKEv2 {
 						if built, bErr := s.buildInboundForLocalRuntime(tx, inbound); bErr == nil {
 							payload = built
 						} else {
@@ -1408,7 +1408,7 @@ func (s *InboundService) AddInbound(inbound *model.Inbound) (*model.Inbound, boo
 								logger.Debug("New inbound added on", rt.Name(), ":", inbound.Tag)
 							} else {
 								logger.Debug("Unable to add inbound on", rt.Name(), ":", err1)
-								if inbound.Protocol != model.MTProto && inbound.Protocol != model.TUIC {
+								if inbound.Protocol != model.MTProto && inbound.Protocol != model.TUIC && inbound.Protocol != model.OpenVPN && inbound.Protocol != model.IKEv2 {
 									needRestart = true
 								}
 							}
@@ -1429,10 +1429,7 @@ func (s *InboundService) AddInbound(inbound *model.Inbound) (*model.Inbound, boo
 		postCommitApply()
 	}
 
-	// A routed mtproto inbound is not an Xray inbound itself, so the runtime
-	// push above only (re)starts the mtg sidecar. The egress SOCKS bridge lives
-	// in the generated config, so force a regen to wire it in.
-	if mtprotoRoutesThroughXray(inbound) {
+	if mtprotoRoutesThroughXray(inbound) || inbound.Protocol == model.OpenVPN || inbound.Protocol == model.IKEv2 {
 		needRestart = true
 	}
 
@@ -1550,8 +1547,7 @@ func (s *InboundService) delInbound(id int) (bool, func(), error) {
 			}
 		}
 	}
-	// Drop the egress SOCKS bridge a routed mtproto inbound left in the config.
-	if mtprotoRoutesThroughXray(&ib) {
+	if mtprotoRoutesThroughXray(&ib) || ib.Protocol == model.OpenVPN || ib.Protocol == model.IKEv2 {
 		needRestart = true
 	}
 	return needRestart, nodePush, nil
@@ -1724,7 +1720,7 @@ func (s *InboundService) SetInboundEnable(id int, enable bool) (bool, error) {
 		return false, nil
 	}
 
-	if mtprotoRoutesThroughXray(inbound) {
+	if mtprotoRoutesThroughXray(inbound) || inbound.Protocol == model.OpenVPN || inbound.Protocol == model.IKEv2 {
 		needRestart = true
 	}
 
@@ -2197,6 +2193,9 @@ func (s *InboundService) buildInboundForLocalRuntime(tx *gorm.DB, inbound *model
 			if id := trafficIDs[email]; id > 0 {
 				c["traffic_id"] = id
 			}
+		}
+		if inbound.Protocol == model.OpenVPN || inbound.Protocol == model.IKEv2 {
+			// Keep client settings as-is for VPN protocols
 		}
 		finalClients = append(finalClients, c)
 	}

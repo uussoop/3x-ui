@@ -12,6 +12,8 @@ import type { TrojanOutboundSettings } from '@/schemas/protocols/outbound/trojan
 import type { VlessOutboundSettings } from '@/schemas/protocols/outbound/vless';
 import type { VmessOutboundSettings } from '@/schemas/protocols/outbound/vmess';
 import type { WireguardOutboundSettings } from '@/schemas/protocols/outbound/wireguard';
+import type { OpenVPNOutboundSettings } from '@/schemas/protocols/outbound/openvpn';
+import type { IKEv2OutboundSettings } from '@/schemas/protocols/outbound/ikev2';
 
 // Plain-object factories mirroring `new Outbound.<X>Settings()` from the
 // legacy class hierarchy, then `.toJson()`. The output matches the wire
@@ -130,6 +132,54 @@ export function createDefaultHysteriaOutboundSettings(): HysteriaOutboundSetting
   return { address: '', port: 443, version: 2 };
 }
 
+// OpenVPN and IKEv2 outbounds are exits: the panel runs the daemon as a client
+// and routes selected traffic through the tunnel. The schemas carry every
+// field the generated daemon config needs, so the scaffold must too — Zod
+// rejects the default until the operator fills in the remote endpoint and
+// credentials.
+export function createDefaultOpenVPNOutboundSettings(): OpenVPNOutboundSettings {
+  return {
+    mode: 'client',
+    config: '',
+    authUserPass: '',
+    dev: 'tun',
+    proto: 'udp',
+    remote: '',
+    port: 1194,
+    cipher: 'AES-256-CBC',
+    auth: 'SHA512',
+    compLzo: 'adaptive',
+    verb: 3,
+    ca: '',
+    cert: '',
+    key: '',
+    tlsAuth: '',
+    probeTarget: '',
+    probeDevice: '',
+  };
+}
+
+export function createDefaultIKEv2OutboundSettings(): IKEv2OutboundSettings {
+  return {
+    mode: 'client',
+    remote: '',
+    port: 500,
+    localAddr: '0.0.0.0',
+    natTraversal: true,
+    ikeVersion: 2,
+    encryption: 'aes256-sha256-modp2048',
+    authMethod: 'eap-mschapv2',
+    username: '',
+    password: '',
+    psk: '',
+    caCert: '',
+    clientCert: '',
+    clientKey: '',
+    probeTarget: '',
+    probeDevice: '',
+  };
+}
+
 export type AnyOutboundSettings =
   | BlackholeOutboundSettings
   | DNSOutboundSettings
@@ -142,7 +192,9 @@ export type AnyOutboundSettings =
   | TrojanOutboundSettings
   | VlessOutboundSettings
   | VmessOutboundSettings
-  | WireguardOutboundSettings;
+  | WireguardOutboundSettings
+  | OpenVPNOutboundSettings
+  | IKEv2OutboundSettings;
 
 // Protocol-aware dispatch. Mirrors the legacy
 // `Outbound.Settings.getSettings(protocol)` switch. Note: the inbound
@@ -179,6 +231,10 @@ export function createDefaultOutboundSettings(protocol: string): AnyOutboundSett
       return createDefaultHysteriaOutboundSettings();
     case 'loopback':
       return createDefaultLoopbackOutboundSettings();
+    case 'openvpn':
+      return createDefaultOpenVPNOutboundSettings();
+    case 'ikev2':
+      return createDefaultIKEv2OutboundSettings();
     default:
       return null;
   }

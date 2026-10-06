@@ -104,6 +104,23 @@ func (s *InboundService) applyTrafficMutationBatch(b *trafficMutationBatch) bool
 			s.applyLocalTuic(plan.inbound.Id)
 			continue
 		}
+		if plan.inbound.Protocol == model.OpenVPN {
+			// A depletion-disabled account must actually lose its tunnel, not just
+			// its accounting row: re-applying the account list stops new
+			// authentications, and terminating the session stops the live one.
+			s.applyLocalOpenVPN(plan.inbound.Id)
+			if plan.action == trafficRemoveUser {
+				s.disconnectOpenVPNClient(plan.email)
+			}
+			continue
+		}
+		if plan.inbound.Protocol == model.IKEv2 {
+			s.applyLocalIKEv2(plan.inbound.Id)
+			if plan.action == trafficRemoveUser {
+				s.disconnectIKEv2Client(plan.email)
+			}
+			continue
+		}
 		rt, err := s.runtimeFor(&plan.inbound)
 		if err == nil {
 			switch plan.action {
