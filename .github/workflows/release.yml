@@ -185,6 +185,54 @@ jobs:
           path: |
             ./x-ui-linux-${{ matrix.platform }}.tar.gz
             ./x-ui-linux-${{ matrix.platform }}.tar.gz.sha256
+      - name: Build .deb package
+        run: |
+          sudo apt-get update && sudo apt-get install -y ruby ruby-dev build-essential
+          sudo gem install fpm -v 1.15.1 --no-document
+          VERSION="${GITHUB_REF_NAME#v}"
+          if [[ "$GITHUB_REF" != refs/tags/* ]]; then
+            VERSION="dev-${GITHUB_SHA::8}"
+          fi
+          case "${{ matrix.platform }}" in
+            amd64) DEB_ARCH="amd64" ;;
+            arm64) DEB_ARCH="arm64" ;;
+            armv7) DEB_ARCH="armhf" ;;
+            armv6) DEB_ARCH="armhf" ;;
+            armv5) DEB_ARCH="armel" ;;
+            386) DEB_ARCH="i386" ;;
+            s390x) DEB_ARCH="s390x" ;;
+            *) DEB_ARCH="${{ matrix.platform }}" ;;
+          esac
+          PKG_DIR=$(mktemp -d)
+          mkdir -p "$PKG_DIR/usr/local/x-ui" "$PKG_DIR/lib/systemd/system"
+          cp -r x-ui/* "$PKG_DIR/usr/local/x-ui/"
+          cp x-ui.service.debian "$PKG_DIR/lib/systemd/system/x-ui.service"
+          chmod +x "$PKG_DIR/usr/local/x-ui/x-ui"
+          fpm -s dir -t deb -n 3x-ui -v "$VERSION"             --architecture "$DEB_ARCH"             --description "3X-UI - Advanced web panel for Xray-core"             --maintainer "3X-UI"             --url "https://github.com/MHSanaei/3x-ui"             --license "AGPL-3.0"             --deb-systemd "$PKG_DIR/lib/systemd/system/x-ui.service"             --after-install /dev/null             -C "$PKG_DIR"             usr/local/x-ui lib/systemd/system
+          DEB_FILE="3x-ui_${VERSION}_${DEB_ARCH}.deb"
+          mv *.deb "$DEB_FILE"
+          sha256sum "$DEB_FILE" > "$DEB_FILE.sha256"
+          ls -la "$DEB_FILE" "$DEB_FILE.sha256"
+
+      - name: Upload .deb to Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: x-ui-deb-${{ matrix.platform }}
+          path: |
+            ./3x-ui_*_${{ matrix.platform }}*.deb
+            ./3x-ui_*_${{ matrix.platform }}*.deb.sha256
+
+      - name: Upload .deb to GH release
+        uses: svenstaro/upload-release-action@v2
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+          file: 3x-ui_*_${DEB_ARCH}*.deb*
+          file_glob: true
+          overwrite: true
+          prerelease: true
+
 
       - name: Upload files to GH release
         uses: svenstaro/upload-release-action@v2
