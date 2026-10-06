@@ -45,6 +45,16 @@ Built as an enhanced fork of the original X-UI project, 3X-UI adds broader proto
 - **13 UI languages** with dark and light themes.
 - **Fail2ban integration** for enforcing per-client IP limits.
 
+## How OpenVPN/IKEv2 integrate
+
+- **Mode**: Pseudo-protocols in the panel (not added to Xray's outbound config). They run as their own daemons (OpenVPN via management interface, strongSwan/IKEv2 via VICI).
+- **Auth**: Per-panel-account username/password. OpenVPN uses a generated verify script (`via-file`) with `script-security 2` (profiles cannot inject scripts). IKEv2 uses EAP credentials loaded for each tunnel.
+- **Lifecycle**: Start/stop/ensure/reconcile per tunnel, with bounded backoff, config rollback on failure, and per-tunnel recovery. Health is distinct from "connected/configured".
+- **Sessions**: Live listing + disconnect per account; common-name mapped to panel accounts for attribution/accounting.
+- **Routing**: Exits bind the tunnel device to Xray's freedom outbound (fail-closed) so dead tunnels don't leak.
+- **Security**: Management loopback-only (passworded), newline/injection guards, secrets never echoed in config, auth-users/verify script written 0600/0700 per tunnel dir.
+
+
 ## Screenshots
 
 <details>
