@@ -209,7 +209,9 @@ jobs:
           chmod +x "$PKG_DIR/usr/local/x-ui/x-ui"
           fpm -s dir -t deb -n 3x-ui -v "$VERSION"             --architecture "$DEB_ARCH"             --description "3X-UI - Advanced web panel for Xray-core"             --maintainer "3X-UI"             --url "https://github.com/MHSanaei/3x-ui"             --license "AGPL-3.0"             --deb-systemd ./x-ui.service.debian             --after-install /dev/null             -C "$PKG_DIR"             usr/local/x-ui
           DEB_FILE="3x-ui_${VERSION}_${DEB_ARCH}.deb"
-          mv *.deb "$DEB_FILE"
+          if [ ! -f "$DEB_FILE" ]; then
+            mv *.deb "$DEB_FILE" 2>/dev/null || true
+          fi
           sha256sum "$DEB_FILE" > "$DEB_FILE.sha256"
           ls -la "$DEB_FILE" "$DEB_FILE.sha256"
 
